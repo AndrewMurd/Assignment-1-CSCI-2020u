@@ -32,30 +32,37 @@ public class main extends Application {
 
     @Override
     public void start(Stage stage) throws FileNotFoundException {
-        GridPane grid = new GridPane();
+        Group gp = new Group();
 
+        //Set Random numbers for each card
         int rand1 = (int)(Math.random()*((54-1)+1))+1;
         int rand2 = (int)(Math.random()*((54-1)+1))+1;
         int rand3 = (int)(Math.random()*((54-1)+1))+1;
 
+        //Get input names
         String InputDir1 = "/Cards/" + rand1 + ".png";
         String InputDir2 = "/Cards/" + rand2 + ".png";
         String InputDir3 = "/Cards/" + rand3 + ".png";
 
+        //Create images and image views for each card
         Image image1 = new Image(InputDir1);
         ImageView card1 = new ImageView(image1);
+        card1.setX(1);
+        card1.setY(1);
 
         Image image2 = new Image(InputDir2);
         ImageView card2 = new ImageView(image2);
+        card2.setX(80);
+        card2.setY(1);
 
         Image image3 = new Image(InputDir3);
         ImageView card3 = new ImageView(image3);
+        card3.setX(160);
+        card3.setY(1);
 
-        grid.add(card1, 10, 10, 10, 10);
-        grid.add(card2, 50, 10, 10, 10);
-        grid.add(card3, 100, 10, 10, 10);
+        gp.getChildren().addAll(card1, card2, card3);
 
-        Scene scene = new Scene(grid);
+        Scene scene = new Scene(gp);
         stage.setScene(scene);
         stage.show();
     }

@@ -1,3 +1,10 @@
+/*
+    Andrew Murdoch
+    100707816
+
+    Question2: This program calculates the future value of an investement through inputing Investment Amount, Years and Annual Interest Rate.
+    Outputing the future value of the investement.
+*/
 import javafx.application.Application;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -29,34 +36,39 @@ public class main extends Application {
     public void start(Stage stage) {
         GridPane grid = new GridPane();
 
+        //Set distance between columns and rows
         grid.setHgap(10);
         grid.setVgap(5);
 
+        //Initialize the text
         Text IAtxt = new Text("Investment Amount");
         Text Yearstxt = new Text("Years");
         Text AIRtxt = new Text("Annual Interest Rate");
         Text FVtxt = new Text("Future Value");
 
+        //Initialize text fields
         TextField IAf = new TextField();
         TextField Yearsf = new TextField();
         TextField AIRf = new TextField();
         TextField FVf = new TextField();
+        //Set text fields text to the right
         Yearsf.setAlignment(Pos.CENTER_RIGHT);
         AIRf.setAlignment(Pos.CENTER_RIGHT);
         FVf.setAlignment(Pos.CENTER_RIGHT);
         IAf.setAlignment(Pos.CENTER_RIGHT);
 
+        //Initialize calculate button
         Button Calculate  = new Button("Calculate");
         Calculate.setPrefWidth(100);
-
+        //handle button
         Calculate.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-                if (IAf.getText() != "" && Yearsf.getText() != "" && AIRf.getText() != "" && FVf.getText() != ""){
-                    double futureValue = Double.valueOf(IAf.getText()) * Math.pow(1 + (Double.valueOf(AIRf.getText())/100/12), Double.valueOf(Yearsf.getText()) * 12);
-                    DecimalFormat df = new DecimalFormat("#.##");
-                    FVf.setText(String.valueOf(df.format(futureValue)));
-                }
+                //Formula to calculate future value of investement
+                double futureValue = Double.valueOf(IAf.getText()) * Math.pow(1 + (Double.valueOf(AIRf.getText())/100/12), Double.valueOf(Yearsf.getText()) * 12);
+                //Format Output
+                DecimalFormat df = new DecimalFormat("#.##");
+                FVf.setText(String.valueOf(df.format(futureValue)));
             }
         });
 

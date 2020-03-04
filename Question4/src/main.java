@@ -1,3 +1,9 @@
+/*
+    Andrew Murdoch
+    100707816
+
+    Question4: This program receives input to a file and outputs a histogram of the number of occurrences of each letter in that file.
+*/
 import com.sun.marlin.stats.Histogram;
 import javafx.application.Application;
 import javafx.collections.FXCollections;
@@ -17,8 +23,6 @@ import javafx.scene.shape.Line;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
-
-import javax.swing.*;
 import java.io.*;
 import java.util.*;
 
@@ -36,9 +40,11 @@ public class main extends Application {
         Canvas canvas = new Canvas(550, 500);
 
         GraphicsContext gc = canvas.getGraphicsContext2D();
-
+        //Initialize charCount: number of occurrences of each letter
+        //Initialize chars: holds alphabet characters
         int[] charCount = new int[26];
         char[] chars = new char[26];
+        //Initialize size length of for loops
         final int sz = charCount.length;
 
         for (int j = 0; j < sz; j++){
@@ -65,15 +71,18 @@ public class main extends Application {
 
         group.getChildren().addAll(canvas, View, fileF, label, error);
 
+        //Create base of graph. The line at the bottom
         gc.strokeLine(20, 401, 533, 401);
 
+        //Handle View Button
         View.setOnAction(e -> {
+            //Reset count of each letter
             for (int j = 0; j < sz; j++){
                 charCount[j] = 0;
             }
-
+            //Remove previous histogram
             gc.clearRect(0, 0, 550, 400);
-
+            //Call countChars to create string for counting
             String txt = null;
             try {
                 txt = countChars(fileF, error);
@@ -81,6 +90,7 @@ public class main extends Application {
                 ex.printStackTrace();
             }
 
+            //Count number of occurrences in string
             for (int j = 0; j < txt.length(); j++){
                 char ch = txt.charAt(j);
                 if (ch >= 'A' && ch <= 'Z'){
@@ -90,22 +100,25 @@ public class main extends Application {
                 }
             }
 
-            int widthBarGraph = 20;
-            int factor = 1;
+            //Create Histogram
+            int widthBarGraph = 20; //Set width between columns
+            int factor = 1;         //Size of increment
             for (int l = 0; l < sz; l++) {
-                System.out.print(chars[l] + " : " + charCount[l] + " ");
+                //Display numbers of occurrences in terminal for debugging
+                System.out.print(chars[l] + ":" + charCount[l] + "  ");
 
+                //Draw histogram bars
                 gc.setFill(Color.BLACK);
                 gc.fillRect(widthBarGraph, (400 - charCount[l] * factor), 12, charCount[l] * factor);
 
                 gc.setFill(Color.WHITE);
                 gc.fillRect(widthBarGraph + 1, (400 - charCount[l] * factor) + 1, 10, (charCount[l] * factor) - 1);
-
+                //Increment location of next bar
                 widthBarGraph += 20;
             }
             System.out.print("\n");
         });
-
+        //Create alphabet line
         int charWidth = 22;
         for (int o = 0; o < sz; o++){
             String charsString = "";
@@ -121,17 +134,19 @@ public class main extends Application {
         stage.setScene(scene);
         stage.show();
     }
-
+    //Create String for counting
     public String countChars(TextField field, Text err) throws IOException {
-        String fileName = "src/txt.txt";
-        String everything = "";
+        String fileName = "src/txt.txt"; //File path
+        String everything = "";          //return string
 
-        fileName = field.getText();
+        fileName = field.getText();      //get input
 
-        File file = new File(fileName);
+        File file = new File(fileName);  //Initialize file
         if (file.exists()){
+            //Initialize file reader for file
             FileReader fr = new FileReader(fileName);
 
+            //Add each character from file to string
             int i;
             while ((i=fr.read()) != -1){
                 if ((char)i != ' '){
@@ -141,6 +156,7 @@ public class main extends Application {
             err.setText("");
             return everything;
         } else{
+            //Output error if file path does not exist
             err.setText("Error: File path not found!!!");
         }
         return "";
