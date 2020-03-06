@@ -18,7 +18,7 @@ import javafx.stage.Stage;
 public class main extends Application {
 
     //Initialize points for perimeter
-    Circle[] circles = {new Circle(0, 0, 6), new Circle(0, 0, 6), new Circle(0, 0, 6)};
+    Circle[] circlePoints = {new Circle(0, 0, 6), new Circle(0, 0, 6), new Circle(0, 0, 6)};
     //Initialize lines between points
     Line line1 = new Line();
     Line line2 = new Line();
@@ -34,49 +34,49 @@ public class main extends Application {
         circle.setStroke(Color.BLACK);
         //Initialize random locations for points and set color to red
         for (int i = 0; i < 3; i++){
-            getRandLoc(circles[i], circle);
-            circles[i].setFill(Color.RED);
+            getRandLoc(circlePoints[i], circle);
+            circlePoints[i].setFill(Color.RED);
         }
         //Call function to initialize line locations and angles
         setLines();
 
         //Handle first point
-        circles[0].setOnMouseDragged(e -> {
+        circlePoints[0].setOnMouseDragged(e -> {
             //Get the counterclockwise angle in radians at point x, y from the x axis
             double radValue = Math.atan2(e.getY() - circle.getCenterY(), e.getX() - circle.getCenterX());
             //Get current x,y position and add the required angle to move along the radius of the circle
             double x_cod = circle.getCenterX() + circle.getRadius() * Math.cos(radValue);
             double y_cod = circle.getCenterY() + circle.getRadius() * Math.sin(radValue);
             //Set new x,y coordinates
-            circles[0].setCenterX(x_cod);
-            circles[0].setCenterY(y_cod);
+            circlePoints[0].setCenterX(x_cod);
+            circlePoints[0].setCenterY(y_cod);
             //Update angle and lines
             setLines();
         });
 
-        circles[1].setOnMouseDragged(e -> {
+        circlePoints[1].setOnMouseDragged(e -> {
             double radValue = Math.atan2(e.getY() - circle.getCenterY(), e.getX() - circle.getCenterX());
 
             double x_cod = circle.getCenterX() + circle.getRadius() * Math.cos(radValue);
             double y_cod = circle.getCenterY() + circle.getRadius() * Math.sin(radValue);
 
-            circles[1].setCenterX(x_cod);
-            circles[1].setCenterY(y_cod);
+            circlePoints[1].setCenterX(x_cod);
+            circlePoints[1].setCenterY(y_cod);
             setLines();
         });
 
-        circles[2].setOnMouseDragged(e -> {
+        circlePoints[2].setOnMouseDragged(e -> {
             double radValue = Math.atan2(e.getY() - circle.getCenterY(), e.getX() - circle.getCenterX());
 
             double x_cod = circle.getCenterX() + circle.getRadius() * Math.cos(radValue);
             double y_cod = circle.getCenterY() + circle.getRadius() * Math.sin(radValue);
 
-            circles[2].setCenterX(x_cod);
-            circles[2].setCenterY(y_cod);
+            circlePoints[2].setCenterX(x_cod);
+            circlePoints[2].setCenterY(y_cod);
             setLines();
         });
 
-        pane.getChildren().addAll(circle, line1, line2, line3, text[0], text[1], text[2], circles[0], circles[1], circles[2]);
+        pane.getChildren().addAll(circle, line1, line2, line3, text[0], text[1], text[2], circlePoints[0], circlePoints[1], circlePoints[2]);
 
         Scene scene = new Scene(pane, 400, 400);
         primaryStage.setScene(scene);
@@ -84,24 +84,11 @@ public class main extends Application {
     }
 
     private void setLines() {
-        //Set Start and End x,y coordinates of lines
-        line1.setStartX(circles[0].getCenterX());
-        line1.setStartY(circles[0].getCenterY());
-        line1.setEndX(circles[1].getCenterX());
-        line1.setEndY(circles[1].getCenterY());
-        line2.setStartX(circles[0].getCenterX());
-        line2.setStartY(circles[0].getCenterY());
-        line2.setEndX(circles[2].getCenterX());
-        line2.setEndY(circles[2].getCenterY());
-        line3.setStartX(circles[1].getCenterX());
-        line3.setStartY(circles[1].getCenterY());
-        line3.setEndX(circles[2].getCenterX());
-        line3.setEndY(circles[2].getCenterY());
 
         //Initialize 2D points for angle calculations
-        double a = new Point2D(circles[2].getCenterX(), circles[2].getCenterY()).distance(circles[1].getCenterX(), circles[1].getCenterY());
-        double b = new Point2D(circles[2].getCenterX(), circles[2].getCenterY()).distance(circles[0].getCenterX(), circles[0].getCenterY());
-        double c = new Point2D(circles[1].getCenterX(), circles[1].getCenterY()).distance(circles[0].getCenterX(), circles[0].getCenterY());
+        double a = new Point2D(circlePoints[2].getCenterX(), circlePoints[2].getCenterY()).distance(circlePoints[1].getCenterX(), circlePoints[1].getCenterY());
+        double b = new Point2D(circlePoints[2].getCenterX(), circlePoints[2].getCenterY()).distance(circlePoints[0].getCenterX(), circlePoints[0].getCenterY());
+        double c = new Point2D(circlePoints[1].getCenterX(), circlePoints[1].getCenterY()).distance(circlePoints[0].getCenterX(), circlePoints[0].getCenterY());
 
         //Calculate Angles
         double[] angle = new double[3];
@@ -111,10 +98,24 @@ public class main extends Application {
 
         //Display angles
         for (int i = 0; i < 3; i++) {
-            text[i].setX(circles[i].getCenterX());
-            text[i].setY(circles[i].getCenterY() - 10);
+            text[i].setX(circlePoints[i].getCenterX());
+            text[i].setY(circlePoints[i].getCenterY() - 10);
             text[i].setText(String.format("%.2f", Math.toDegrees(angle[i])));
         }
+
+        //Set Start and End x,y coordinates of lines
+        line1.setStartX(circlePoints[0].getCenterX());
+        line1.setStartY(circlePoints[0].getCenterY());
+        line1.setEndX(circlePoints[1].getCenterX());
+        line1.setEndY(circlePoints[1].getCenterY());
+        line2.setStartX(circlePoints[0].getCenterX());
+        line2.setStartY(circlePoints[0].getCenterY());
+        line2.setEndX(circlePoints[2].getCenterX());
+        line2.setEndY(circlePoints[2].getCenterY());
+        line3.setStartX(circlePoints[1].getCenterX());
+        line3.setStartY(circlePoints[1].getCenterY());
+        line3.setEndX(circlePoints[2].getCenterX());
+        line3.setEndY(circlePoints[2].getCenterY());
     }
 
     //Get random x,y coordinates along the perimeter of circle
